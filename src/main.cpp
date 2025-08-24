@@ -1,21 +1,27 @@
+#include <iostream>
 #include <SFML/Graphics.hpp>
+
+
+using namespace sf;
+
+
 
 int main()
 {
-    auto window = sf::RenderWindow(sf::VideoMode({1920u, 1080u}), "CMake SFML Project");
-    window.setFramerateLimit(144);
+    VideoMode vm({ 1920u, 1080u });
+    RenderWindow window = RenderWindow(vm, "Timberman");
 
-    while (window.isOpen())
-    {
-        while (const std::optional event = window.pollEvent())
-        {
-            if (event->is<sf::Event::Closed>())
-            {
-                window.close();
-            }
+    while (window.isOpen()) {
+
+
+        if (Keyboard::isKeyPressed(sf::Keyboard::Key::Escape)) {
+            window.close();
         }
 
-        window.clear();
-        window.display();
+
+
+
     }
+    
+    return 0;
 }
