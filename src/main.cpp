@@ -13,13 +13,9 @@ int main()
 
     while (window.isOpen()) {
 
-
         if (Keyboard::isKeyPressed(sf::Keyboard::Key::Escape)) {
             window.close();
         }
-
-
-
 
     }
     
