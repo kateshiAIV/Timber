@@ -10,24 +10,30 @@ using namespace sf;
 
 int main()
 {
+
+	//Window;
     VideoMode vm({ 1920u, 1080u });
     RenderWindow window = RenderWindow(vm, "Timberman");
+
+
+	//Background
 	Texture textureBackground;
 	textureBackground.loadFromFile("graphics/background.png");
 	Sprite spriteBackground(textureBackground);
     spriteBackground.setPosition(sf::Vector2<float>(0.0f,0.0f));
 
-
-    std::ofstream("file.txt") << "file content";
-
+	//Game loop
     while (window.isOpen()) {
+
+
+        //Exit on ESC
         if (Keyboard::isKeyPressed(sf::Keyboard::Key::Escape)) {
             window.close();
         }
 
-        window.clear();                       // очистка окна
-        window.draw(spriteBackground);        // рисуем фон
-        window.display();                     // выводим на экран
+        window.clear();                       
+        window.draw(spriteBackground);        
+        window.display();                     
     }
 
     
