@@ -57,8 +57,47 @@ int main()
     float cloud3Speed = 0.0f;
 
 
+    //Clock
+    Clock clock;
+
 	//Game loop
     while (window.isOpen()) {
+        Time deltaTime = clock.restart();
+
+        //Setup the bee
+
+        if (!beeActive)
+        {
+            srand((int)time(0));
+            beeSpeed = (rand() % 200) + 200;
+
+            srand((int)time(0) * 10);
+            float height = (rand() % 500) + 500;
+            spriteBee.setPosition(sf::Vector2<float>(2000.0f,height));
+            beeActive = true;
+
+        }
+        else
+        {
+            spriteBee.setPosition
+            (
+
+                sf::Vector2<float>(
+                spriteBee.getPosition().x - (beeSpeed * deltaTime.asSeconds()),
+                spriteBee.getPosition().y
+                )
+            );
+
+
+            if (spriteBee.getPosition().x < -100)
+            {
+                // Set it up ready to be a whole new bee next frame
+                beeActive = false;
+            }
+
+
+        }
+
 
 
         //Exit on ESC
