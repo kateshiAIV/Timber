@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <SFML/Graphics.hpp>
 
 
@@ -10,6 +11,39 @@ using namespace sf;
 
 int main()
 {
+
+    sf::Font font;
+    font.openFromFile("fonts/KOMIKAP.ttf");
+
+    //Game Pause
+    sf::Text txtPaused(font, "", 30);
+    txtPaused.setString("Press SPACE to start!!!");
+    txtPaused.setCharacterSize(75);
+    txtPaused.setFillColor(Color::White);
+    txtPaused.setFont(font);
+    bool paused = true;
+
+
+
+    //Game Score
+    sf::Text txtScore(font, "", 30);
+    txtScore.setString("Score = 0");
+    txtScore.setCharacterSize(100);
+    txtScore.setFillColor(Color::White);
+    txtScore.setFont(font);
+    int score = 0;
+
+
+
+    FloatRect textRect = txtPaused.getGlobalBounds();
+    txtPaused.setOrigin(textRect.getCenter());
+    txtPaused.setPosition(sf::Vector2<float>(1920.0f / 2.0f, 1080.0f / 2.0f));
+    txtScore.setPosition(sf::Vector2<float>(20, 20));
+
+
+
+
+
 
 	//Window;
     VideoMode vm({ 1920u, 1080u });
@@ -64,161 +98,173 @@ int main()
     while (window.isOpen()) {
         Time deltaTime = clock.restart();
 
-        //Setup the bee
-        if (!beeActive)
-        {
-            srand((int)time(0));
-            beeSpeed = (rand() % 200) + 200;
 
-            srand((int)time(0) * 10);
-            float height = (rand() % 500) + 500;
-            spriteBee.setPosition(sf::Vector2<float>(2000.0f,height));
-            beeActive = true;
+        if (!paused) {
 
-        }
-        else
-        {
-            spriteBee.setPosition
-            (
-
-                sf::Vector2<float>(
-                spriteBee.getPosition().x - (beeSpeed * deltaTime.asSeconds()),
-                spriteBee.getPosition().y
-                )
-            );
-            if (spriteBee.getPosition().x < -100)
+            //Setup the bee
+            if (!beeActive)
             {
-                // Set it up ready to be a whole new bee next frame
-                beeActive = false;
+                srand((int)time(0));
+                beeSpeed = (rand() % 200) + 200;
+
+                srand((int)time(0) * 10);
+                float height = (rand() % 500) + 500;
+                spriteBee.setPosition(sf::Vector2<float>(2000.0f, height));
+                beeActive = true;
+
             }
-        }
-
-
-
-        //setup Cloud1
-        if (!cloud1Active) {
-            srand((int)time);
-            cloud1Speed = (rand() % 300);
-            srand((int)time);
-            float height = (rand() % 150);
-            float length = -(rand() % 700);
-            spriteCloud1.setPosition
-            (
-                sf::Vector2<float>(
-                    length,
-                    height
-                )
-            );
-            cloud1Active = true;
-
-        }
-        else
-        {
-            spriteCloud1.setPosition
-            (
-                sf::Vector2<float>
+            else
+            {
+                spriteBee.setPosition
                 (
-                spriteCloud1.getPosition().x +
-                (cloud1Speed * deltaTime.asSeconds()),
-                spriteCloud1.getPosition().y
-                )
-            );
 
-            // Has the cloud reached the right hand edge of the screen?
-            if (spriteCloud1.getPosition().x > 1920)
-            {
-                // Set it up ready to be a whole new cloud next frame
-                cloud1Active = false;
+                    sf::Vector2<float>(
+                        spriteBee.getPosition().x - (beeSpeed * deltaTime.asSeconds()),
+                        spriteBee.getPosition().y
+                    )
+                );
+                if (spriteBee.getPosition().x < -100)
+                {
+                    // Set it up ready to be a whole new bee next frame
+                    beeActive = false;
+                }
             }
 
 
-        }
 
-
-        //setup Cloud2
-        if (!cloud2Active) {
-            srand((int)time*20);
-            cloud2Speed = (rand() % 300);
-            srand((int)time*20);
-            float height = (rand() % 300) - 150;
-            float length = -(rand() % 700);
-            spriteCloud2.setPosition
-            (
-                sf::Vector2<float>(
-                    length,
-                    height
-                )
-            );
-            cloud2Active = true;
-
-        }
-        else
-        {
-            spriteCloud2.setPosition
-            (
-                sf::Vector2<float>
+            //setup Cloud1
+            if (!cloud1Active) {
+                srand((int)time);
+                cloud1Speed = (rand() % 300);
+                srand((int)time);
+                float height = (rand() % 150);
+                float length = -(rand() % 700);
+                spriteCloud1.setPosition
                 (
-                    spriteCloud2.getPosition().x +
-                    (cloud2Speed * deltaTime.asSeconds()),
-                    spriteCloud2.getPosition().y
-                )
-            );
+                    sf::Vector2<float>(
+                        length,
+                        height
+                    )
+                );
+                cloud1Active = true;
 
-            // Has the cloud reached the right hand edge of the screen?
-            if (spriteCloud2.getPosition().x > 1920)
-            {
-                // Set it up ready to be a whole new cloud next frame
-                cloud2Active = false;
             }
-
-
-        }
-
-        //setup Cloud3
-        if (!cloud3Active) {
-            srand((int)time*30);
-            cloud3Speed = (rand() % 300);
-            srand((int)time*30);
-            float height = (rand() % 450) - 150;
-            float length = -(rand() % 700);
-            spriteCloud3.setPosition
-            (
-                sf::Vector2<float>(
-                    length,
-                    height
-                )
-            );
-            cloud3Active = true;
-
-        }
-        else
-        {
-            spriteCloud3.setPosition
-            (
-                sf::Vector2<float>
+            else
+            {
+                spriteCloud1.setPosition
                 (
-                    spriteCloud3.getPosition().x +
-                    (cloud3Speed * deltaTime.asSeconds()),
-                    spriteCloud3.getPosition().y
-                )
-            );
+                    sf::Vector2<float>
+                    (
+                        spriteCloud1.getPosition().x +
+                        (cloud1Speed * deltaTime.asSeconds()),
+                        spriteCloud1.getPosition().y
+                    )
+                );
 
-            // Has the cloud reached the right hand edge of the screen?
-            if (spriteCloud3.getPosition().x > 1920)
-            {
-                // Set it up ready to be a whole new cloud next frame
-                cloud3Active = false;
+                // Has the cloud reached the right hand edge of the screen?
+                if (spriteCloud1.getPosition().x > 1920)
+                {
+                    // Set it up ready to be a whole new cloud next frame
+                    cloud1Active = false;
+                }
+
+
             }
 
 
+            //setup Cloud2
+            if (!cloud2Active) {
+                srand((int)time * 20);
+                cloud2Speed = (rand() % 300);
+                srand((int)time * 20);
+                float height = (rand() % 300) - 150;
+                float length = -(rand() % 700);
+                spriteCloud2.setPosition
+                (
+                    sf::Vector2<float>(
+                        length,
+                        height
+                    )
+                );
+                cloud2Active = true;
+
+            }
+            else
+            {
+                spriteCloud2.setPosition
+                (
+                    sf::Vector2<float>
+                    (
+                        spriteCloud2.getPosition().x +
+                        (cloud2Speed * deltaTime.asSeconds()),
+                        spriteCloud2.getPosition().y
+                    )
+                );
+
+                // Has the cloud reached the right hand edge of the screen?
+                if (spriteCloud2.getPosition().x > 1920)
+                {
+                    // Set it up ready to be a whole new cloud next frame
+                    cloud2Active = false;
+                }
+
+
+            }
+
+            //setup Cloud3
+            if (!cloud3Active) {
+                srand((int)time * 30);
+                cloud3Speed = (rand() % 300);
+                srand((int)time * 30);
+                float height = (rand() % 450) - 150;
+                float length = -(rand() % 700);
+                spriteCloud3.setPosition
+                (
+                    sf::Vector2<float>(
+                        length,
+                        height
+                    )
+                );
+                cloud3Active = true;
+
+            }
+            else
+            {
+                spriteCloud3.setPosition
+                (
+                    sf::Vector2<float>
+                    (
+                        spriteCloud3.getPosition().x +
+                        (cloud3Speed * deltaTime.asSeconds()),
+                        spriteCloud3.getPosition().y
+                    )
+                );
+
+                // Has the cloud reached the right hand edge of the screen?
+                if (spriteCloud3.getPosition().x > 1920)
+                {
+                    // Set it up ready to be a whole new cloud next frame
+                    cloud3Active = false;
+                }
+
+
+            }
+
+            // Update the score text
+            std::stringstream ss;
+            ss << "Score = " << score;
+            txtScore.setString(ss.str());
+
         }
-
-      
-
 
         //Exit on ESC
         if (Keyboard::isKeyPressed(sf::Keyboard::Key::Escape)) {
             window.close();
+        }
+
+        //Exit on ESC
+        if (Keyboard::isKeyPressed(sf::Keyboard::Key::Space)) {
+            paused = false;
         }
 
         window.clear();                       
@@ -228,6 +274,9 @@ int main()
         window.draw(spriteCloud3);
         window.draw(spriteTree);
         window.draw(spriteBee);
+        window.draw(txtScore);
+        window.draw(txtPaused);
+
         window.display();                     
     }
 
