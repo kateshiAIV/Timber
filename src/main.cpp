@@ -94,12 +94,45 @@ int main()
     //Clock
     Clock clock;
 
+
+    RectangleShape timeBar;
+    float timeBarWidth = 960.0f;
+    float timeBarHeight = 40.0f;
+    timeBar.setSize(sf::Vector2<float>(timeBarWidth, timeBarHeight));
+    timeBar.setFillColor(sf::Color::Red);
+    timeBar.setPosition(sf::Vector2<float>(((1920.0f / 2) - timeBarWidth/2), 900.0f));
+
+    Time gameTimeTotal;
+    float timeRemaining = 6.0f;
+    float timeBarWidthPerSecond = timeBarWidth / timeRemaining;
+
+
 	//Game loop
     while (window.isOpen()) {
         Time deltaTime = clock.restart();
 
 
         if (!paused) {
+
+
+            // Subtract from the amount of time remaining
+            timeRemaining -= deltaTime.asSeconds();
+            // size up the time bar
+            timeBar.setSize(Vector2f(timeBarWidthPerSecond * timeRemaining, timeBarHeight));
+
+
+            if (timeRemaining <= 0) {
+                paused = true;
+                txtPaused.setString("Out of time");
+            }
+
+            //Reposition the text based on its new size
+            FloatRect textRect = txtPaused.getLocalBounds();
+            txtPaused.setOrigin(textRect.getCenter());
+            txtPaused.setPosition(sf::Vector2<float>(1920.0f / 2.0f, 1080.0f / 2.0f));
+            txtScore.setPosition(sf::Vector2<float>(20, 20));
+
+
 
             //Setup the bee
             if (!beeActive)
@@ -265,6 +298,8 @@ int main()
         //Exit on ESC
         if (Keyboard::isKeyPressed(sf::Keyboard::Key::Space)) {
             paused = false;
+            timeRemaining = 6;
+            score = 0;
         }
 
         window.clear();                       
@@ -275,7 +310,12 @@ int main()
         window.draw(spriteTree);
         window.draw(spriteBee);
         window.draw(txtScore);
-        window.draw(txtPaused);
+        window.draw(timeBar);
+
+        if (paused)
+        {
+            window.draw(txtPaused);
+        }
 
         window.display();                     
     }
