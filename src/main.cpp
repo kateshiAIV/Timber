@@ -8,9 +8,32 @@ using namespace sf;
 
 
 
+void updateBranches(int seed);
+
+const int NUM_BRANCHES = 6;
+
+
+
+enum class side { LEFT, RIGHT, NONE };
+side branchPositions[NUM_BRANCHES];
+
+
+
+
 
 int main()
 {
+
+    Texture textureBranch;
+    textureBranch.loadFromFile("graphics/branch.png");
+    std::vector<sf::Sprite> branches{
+        sf::Sprite(textureBranch),
+        sf::Sprite(textureBranch),
+        sf::Sprite(textureBranch),
+        sf::Sprite(textureBranch),
+        sf::Sprite(textureBranch),
+        sf::Sprite(textureBranch)
+    };
 
     sf::Font font;
     font.openFromFile("fonts/KOMIKAP.ttf");
@@ -90,6 +113,17 @@ int main()
     float cloud2Speed = 0.0f;
     float cloud3Speed = 0.0f;
 
+    //branch
+
+
+    for (int i = 0; i < NUM_BRANCHES; i++) {
+        branches[i].setTexture(textureBranch);
+        branches[i].setPosition(sf::Vector2<float>(-2000.0f, -2000.0f));
+        branches[i].setOrigin(sf::Vector2<float>(220.0f, 20.0f));
+
+    }
+
+
 
     //Clock
     Clock clock;
@@ -105,6 +139,7 @@ int main()
     Time gameTimeTotal;
     float timeRemaining = 6.0f;
     float timeBarWidthPerSecond = timeBarWidth / timeRemaining;
+
 
 
 	//Game loop
@@ -288,6 +323,28 @@ int main()
             ss << "Score = " << score;
             txtScore.setString(ss.str());
 
+
+            for (int i = 0; i < NUM_BRANCHES; i++) 
+            {
+                float height = 150.0f * i;
+
+                if (branchPositions[i] == side::RIGHT) 
+                {
+                    branches[i].setPosition(sf::Vector2(610.0f, height));
+                    branches[i].setRotation(sf::Angle(sf::degrees(180.0f)));
+                }
+                else if (branchPositions[i] == side::RIGHT) 
+                {
+                    branches[i].setPosition(sf::Vector2(1330.0f, height));
+                    branches[i].setRotation(sf::Angle(sf::degrees(0.0f)));
+                }
+                else 
+                {
+                    branches[i].setPosition(sf::Vector2(6000.0f, height));
+                }
+
+            }
+
         }
 
         //Exit on ESC
@@ -311,6 +368,9 @@ int main()
         window.draw(spriteBee);
         window.draw(txtScore);
         window.draw(timeBar);
+        for (int i = 0; i < NUM_BRANCHES; i++) {
+            window.draw(branches[i]);
+        }
 
         if (paused)
         {
@@ -322,4 +382,28 @@ int main()
 
     
     return 0;
+}
+
+
+void updateBranches(int seed)
+{
+    for (int j = NUM_BRANCHES - 1; j > 0; j--) {
+        branchPositions[j] = branchPositions[j - 1];
+    }
+    // Spawn a new branch at position 0
+ // LEFT, RIGHT or NONE
+    srand((int)time(0) + seed);
+    int r = (rand() % 5);
+    switch (r) {
+    case 0:
+        branchPositions[0] = side::LEFT;
+        break;
+    case 1:
+        branchPositions[0] = side::RIGHT;
+        break;
+    default:
+        branchPositions[0] = side::NONE;
+        break;
+
+    }
 }
