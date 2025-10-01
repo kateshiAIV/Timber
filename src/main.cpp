@@ -179,6 +179,8 @@ int main()
     float logSpeedX = 1000;
     float logSpeedY = -1500;
     
+    //input
+    bool bActiveInput = false;
 
 
 	//Game loop
@@ -391,11 +393,21 @@ int main()
             window.close();
         }
 
-        //Exit on ESC
+        //Start on SPACE
         if (Keyboard::isKeyPressed(sf::Keyboard::Key::Space)) {
             paused = false;
             timeRemaining = 6;
             score = 0;
+
+            for (int i = 0; i < NUM_BRANCHES; i++) 
+            {
+                branchPositions[i] = side::NONE;
+            }
+
+            spriteRIP.setPosition(sf::Vector2(675.0f, 2000.0f));
+            spritePlayer.setPosition(sf::Vector2(580.0f, 720.0f));
+            bActiveInput = true;
+
         }
 
         window.clear();                       
