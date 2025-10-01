@@ -409,6 +409,41 @@ int main()
             bActiveInput = true;
 
         }
+        if (bActiveInput)
+        {
+
+            if (Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
+            {
+                sidePlayer = side::RIGHT;
+                score++;
+                timeRemaining += (2 / score) + 0.15;
+                spriteAXE.setPosition(sf::Vector2(AXE_POSITION_RIGHT, spriteAXE.getPosition().y));
+                spritePlayer.setPosition(sf::Vector2(1200.0f, 720.0f));
+                updateBranches(score);
+                spriteLog.setPosition(sf::Vector2(810.0f, 720.0f));
+                logSpeedX = -5000.0f;
+                logActive = true;
+                bActiveInput = false;
+            }
+
+            if (Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
+            {
+                sidePlayer = side::LEFT;
+                score++;
+                timeRemaining += (2 / score) + 0.15;
+                spriteAXE.setPosition(sf::Vector2(AXE_POSITION_LEFT, spriteAXE.getPosition().y));
+                spritePlayer.setPosition(sf::Vector2(580.0f, 720.0f));
+                updateBranches(score);
+                spriteLog.setPosition(sf::Vector2(810.0f, 720.0f));
+                logSpeedX = 5000.0f;
+                logActive = true;
+                bActiveInput = false;
+            }
+
+
+        }
+
+
 
         window.clear();                       
         window.draw(spriteBackground);    
