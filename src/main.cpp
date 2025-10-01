@@ -141,6 +141,45 @@ int main()
     float timeBarWidthPerSecond = timeBarWidth / timeRemaining;
 
 
+    //Player Setup
+
+    Texture texturePlayer;
+    texturePlayer.loadFromFile("graphics/player.png");
+    Sprite spritePlayer(texturePlayer);
+    spritePlayer.setPosition(sf::Vector2(580.0f, 720.0f));
+    side sidePlayer = side::LEFT;
+
+    // Gravestone setup
+
+    Texture textureRIP;
+    textureRIP.loadFromFile("graphics/rip.png");
+    Sprite spriteRIP(textureRIP);
+    spriteRIP.setPosition(sf::Vector2(600.0f, 860.0f));
+
+    // Axe setip
+
+    Texture textureAXE;
+    textureAXE.loadFromFile("graphics/axe.png");
+    Sprite spriteAXE(textureAXE);
+    spriteAXE.setPosition(sf::Vector2(700.0f,830.0f));
+
+    //AXE
+    const float AXE_POSITION_RIGHT = 1075.0f;
+    const float AXE_POSITION_LEFT = 700.0f;
+
+    //setup flying LOG
+
+    Texture textureLog;
+    textureLog.loadFromFile("graphics/log.png");
+    Sprite spriteLog(textureLog);
+    spriteLog.setPosition(sf::Vector2(810.0f, 720.0f));
+
+    //LOG
+    bool logActive = false;
+    float logSpeedX = 1000;
+    float logSpeedY = -1500;
+    
+
 
 	//Game loop
     while (window.isOpen()) {
@@ -368,6 +407,11 @@ int main()
         window.draw(spriteBee);
         window.draw(txtScore);
         window.draw(timeBar);
+        window.draw(spriteAXE);
+        window.draw(spritePlayer);
+        window.draw(spriteRIP);
+        window.draw(spriteLog);
+
         for (int i = 0; i < NUM_BRANCHES; i++) {
             window.draw(branches[i]);
         }
