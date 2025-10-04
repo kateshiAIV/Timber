@@ -2,6 +2,7 @@
 #include <fstream>
 #include <sstream>
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 
 using namespace sf;
@@ -23,6 +24,22 @@ side branchPositions[NUM_BRANCHES];
 
 int main()
 {
+
+
+    //Sounds
+
+    SoundBuffer soundBufferChop;
+    soundBufferChop.loadFromFile("sound/chop.wav");
+    Sound soundChop(soundBufferChop);
+
+    SoundBuffer soundBufferDeath;
+    soundBufferDeath.loadFromFile("sound/death.wav");
+    Sound soundDeath(soundBufferDeath);
+
+    SoundBuffer soundBufferTime;
+    soundBufferTime.loadFromFile("sound/out_of_time.wav");
+    Sound soundTime(soundBufferTime);
+    
 
     Texture textureBranch;
     textureBranch.loadFromFile("graphics/branch.png");
@@ -131,10 +148,10 @@ int main()
 
     RectangleShape timeBar;
     float timeBarWidth = 960.0f;
-    float timeBarHeight = 40.0f;
+    float timeBarHeight = 25.0f;
     timeBar.setSize(sf::Vector2<float>(timeBarWidth, timeBarHeight));
     timeBar.setFillColor(sf::Color::Red);
-    timeBar.setPosition(sf::Vector2<float>(((1920.0f / 2) - timeBarWidth/2), 900.0f));
+    timeBar.setPosition(sf::Vector2<float>(((1920.0f / 2) - timeBarWidth/2), 925.0f));
 
     Time gameTimeTotal;
     float timeRemaining = 6.0f;
@@ -200,6 +217,7 @@ int main()
             if (timeRemaining <= 0) {
                 paused = true;
                 txtPaused.setString("Out of time");
+                soundTime.play();
             }
 
             //Reposition the text based on its new size
@@ -369,7 +387,7 @@ int main()
             {
                 float height = 150.0f * i;
 
-                if (branchPositions[i] == side::RIGHT) 
+                if (branchPositions[i] == side::LEFT) 
                 {
                     branches[i].setPosition(sf::Vector2(610.0f, height));
                     branches[i].setRotation(sf::Angle(sf::degrees(180.0f)));
@@ -384,6 +402,53 @@ int main()
                     branches[i].setPosition(sf::Vector2(6000.0f, height));
                 }
 
+            }
+
+            if (logActive)
+            {
+                spriteLog.setPosition(
+                    sf::Vector2(
+                        spriteLog.getPosition().x +
+                        (logSpeedX * deltaTime.asSeconds()),
+
+                        spriteLog.getPosition().y +
+                        (logSpeedY * deltaTime.asSeconds())
+                    )
+                );
+
+                if (spriteLog.getPosition().x < -100.0f ||
+                    spriteLog.getPosition().x > 2000.0f)
+                {
+                    logActive = false;
+                    spriteLog.setPosition(sf::Vector2(810.0f, 780.0f));
+
+                }
+            }
+
+            if (branchPositions[5] == sidePlayer) {
+                paused = true;
+                bActiveInput = false;
+                spriteRIP.setPosition(sf::Vector2(525.0f, 760.0f));
+                spritePlayer.setPosition(sf::Vector2(2000.0f, 620.0f));
+                txtPaused.setString("SQUISHED");
+
+                FloatRect textRect = txtPaused.getLocalBounds();
+                txtPaused.setOrigin(textRect.getCenter());
+
+                txtPaused.setPosition(sf::Vector2(1920.0f / 2, 1080.0f / 2));
+                soundDeath.play();
+            }
+
+        }
+
+        //Event event();
+        while (const std::optional event = window.pollEvent())
+        {
+            if (event->is<sf::Event::KeyPressed>() && !paused)
+            {
+                bActiveInput = true;
+                spriteAXE.setPosition(sf::Vector2(2000.0f,
+                    spriteAXE.getPosition().y));
             }
 
         }
@@ -420,10 +485,11 @@ int main()
                 spriteAXE.setPosition(sf::Vector2(AXE_POSITION_RIGHT, spriteAXE.getPosition().y));
                 spritePlayer.setPosition(sf::Vector2(1200.0f, 720.0f));
                 updateBranches(score);
-                spriteLog.setPosition(sf::Vector2(810.0f, 720.0f));
+                spriteLog.setPosition(sf::Vector2(810.0f, 780.0f));
                 logSpeedX = -5000.0f;
                 logActive = true;
                 bActiveInput = false;
+                soundChop.play();
             }
 
             if (Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
@@ -438,6 +504,7 @@ int main()
                 logSpeedX = 5000.0f;
                 logActive = true;
                 bActiveInput = false;
+                soundChop.play();
             }
 
 
@@ -454,10 +521,11 @@ int main()
         window.draw(spriteBee);
         window.draw(txtScore);
         window.draw(timeBar);
-        window.draw(spriteAXE);
-        window.draw(spritePlayer);
-        window.draw(spriteRIP);
         window.draw(spriteLog);
+        window.draw(spritePlayer);
+        window.draw(spriteAXE);
+        window.draw(spriteRIP);
+
 
         for (int i = 0; i < NUM_BRANCHES; i++) {
             window.draw(branches[i]);
