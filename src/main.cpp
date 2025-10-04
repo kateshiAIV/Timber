@@ -119,9 +119,9 @@ int main()
     Cloud::LoadTexture();
 
     std::vector<Cloud> CloudsArray = {
-        Cloud(0.0f, 0.0f),
-        Cloud(250.0f, 0.0f),
-        Cloud(500.0f, 0.0f)
+        Cloud(0.0f, 150.0f),
+        Cloud(1500.0f, 0.0f),
+        Cloud(1800.0f, 300.0f)
     };
 
 
@@ -258,7 +258,7 @@ int main()
             for (int i = 0; i < CloudsArray.size(); i++) {
                 if (!CloudsArray[i].GetActive()) {
                     srand((int)time);
-                    CloudsArray[i].SetSpeed(rand() % 300);
+                    CloudsArray[i].SetSpeed((rand() % 300)+150);
                     srand((int)time);
                     float height = (rand() % 150);
                     float length = -(rand() % 700);

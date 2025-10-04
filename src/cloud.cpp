@@ -1,7 +1,7 @@
 #include "cloud.h"
 
 Cloud::Cloud(float x, float y)
-    : cloudActive(false), cloudSpeed(0.0f), spriteCloud(textureCloud)
+    : cloudActive(true), cloudSpeed(150.0f), spriteCloud(textureCloud)
 {
     spriteCloud.setPosition(sf::Vector2f(x, y));
 }
