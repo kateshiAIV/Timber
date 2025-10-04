@@ -3,6 +3,9 @@
 #include <sstream>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+#include <vector>
+#include "cloud.cpp"
+
 
 
 using namespace sf;
@@ -112,23 +115,17 @@ int main()
 
 
     //Clouds
-    Texture textureCloud;
-    textureCloud.loadFromFile("graphics/cloud.png");
-    Sprite spriteCloud1(textureCloud);
-    Sprite spriteCloud2(textureCloud);
-    Sprite spriteCloud3(textureCloud);
 
-    spriteCloud1.setPosition(sf::Vector2<float>(0.0f, 0.0f));
-    spriteCloud2.setPosition(sf::Vector2<float>(250.0f, 0.0f));
-    spriteCloud3.setPosition(sf::Vector2<float>(500.0f, 0.0f));
+    Cloud::LoadTexture();
 
-    bool cloud1Active = false;
-    bool cloud2Active = false;
-    bool cloud3Active = false;
+    std::vector<Cloud> CloudsArray = {
+        Cloud(0.0f, 0.0f),
+        Cloud(250.0f, 0.0f),
+        Cloud(500.0f, 0.0f)
+    };
 
-    float cloud1Speed = 0.0f;
-    float cloud2Speed = 0.0f;
-    float cloud3Speed = 0.0f;
+
+
 
     //branch
 
@@ -258,124 +255,46 @@ int main()
             }
 
 
-
-            //setup Cloud1
-            if (!cloud1Active) {
-                srand((int)time);
-                cloud1Speed = (rand() % 300);
-                srand((int)time);
-                float height = (rand() % 150);
-                float length = -(rand() % 700);
-                spriteCloud1.setPosition
-                (
-                    sf::Vector2<float>(
-                        length,
-                        height
-                    )
-                );
-                cloud1Active = true;
-
-            }
-            else
-            {
-                spriteCloud1.setPosition
-                (
-                    sf::Vector2<float>
+            for (int i = 0; i < CloudsArray.size(); i++) {
+                if (!CloudsArray[i].GetActive()) {
+                    srand((int)time);
+                    CloudsArray[i].SetSpeed(rand() % 300);
+                    srand((int)time);
+                    float height = (rand() % 150);
+                    float length = -(rand() % 700);
+                    CloudsArray[i].SetCloudPosition
                     (
-                        spriteCloud1.getPosition().x +
-                        (cloud1Speed * deltaTime.asSeconds()),
-                        spriteCloud1.getPosition().y
-                    )
-                );
-
-                // Has the cloud reached the right hand edge of the screen?
-                if (spriteCloud1.getPosition().x > 1920)
-                {
-                    // Set it up ready to be a whole new cloud next frame
-                    cloud1Active = false;
+                        sf::Vector2<float>
+                        (
+                            length,
+                            CloudsArray[i].GetCloudPosition().y
+                        )
+                    );
+                    CloudsArray[i].SetActive(true);
                 }
+                else {
 
 
-            }
-
-
-            //setup Cloud2
-            if (!cloud2Active) {
-                srand((int)time * 20);
-                cloud2Speed = (rand() % 300);
-                srand((int)time * 20);
-                float height = (rand() % 300) - 150;
-                float length = -(rand() % 700);
-                spriteCloud2.setPosition
-                (
-                    sf::Vector2<float>(
-                        length,
-                        height
-                    )
-                );
-                cloud2Active = true;
-
-            }
-            else
-            {
-                spriteCloud2.setPosition
-                (
-                    sf::Vector2<float>
+                    CloudsArray[i].SetCloudPosition
                     (
-                        spriteCloud2.getPosition().x +
-                        (cloud2Speed * deltaTime.asSeconds()),
-                        spriteCloud2.getPosition().y
-                    )
-                );
+                        sf::Vector2<float>
+                        (
+                            CloudsArray[i].GetCloudPosition().x + CloudsArray[i].GetSpeed() * deltaTime.asSeconds(),
+                            CloudsArray[i].GetCloudPosition().y
+                        )
+                    );
+                    if (CloudsArray[i].GetCloudPosition().x > 1920.0f)
+                    {
+                        CloudsArray[i].SetActive(false);
+                    }
 
-                // Has the cloud reached the right hand edge of the screen?
-                if (spriteCloud2.getPosition().x > 1920)
-                {
-                    // Set it up ready to be a whole new cloud next frame
-                    cloud2Active = false;
+
+
+
                 }
-
-
             }
 
-            //setup Cloud3
-            if (!cloud3Active) {
-                srand((int)time * 30);
-                cloud3Speed = (rand() % 300);
-                srand((int)time * 30);
-                float height = (rand() % 450) - 150;
-                float length = -(rand() % 700);
-                spriteCloud3.setPosition
-                (
-                    sf::Vector2<float>(
-                        length,
-                        height
-                    )
-                );
-                cloud3Active = true;
 
-            }
-            else
-            {
-                spriteCloud3.setPosition
-                (
-                    sf::Vector2<float>
-                    (
-                        spriteCloud3.getPosition().x +
-                        (cloud3Speed * deltaTime.asSeconds()),
-                        spriteCloud3.getPosition().y
-                    )
-                );
-
-                // Has the cloud reached the right hand edge of the screen?
-                if (spriteCloud3.getPosition().x > 1920)
-                {
-                    // Set it up ready to be a whole new cloud next frame
-                    cloud3Active = false;
-                }
-
-
-            }
 
             // Update the score text
             std::stringstream ss;
@@ -514,9 +433,10 @@ int main()
 
         window.clear();                       
         window.draw(spriteBackground);    
-        window.draw(spriteCloud1);
-        window.draw(spriteCloud2);
-        window.draw(spriteCloud3);
+
+        for (int i = 0; i < CloudsArray.size(); i++) {
+            window.draw(CloudsArray[i].GetSprite());
+        }
         window.draw(spriteTree);
         window.draw(spriteBee);
         window.draw(txtScore);
@@ -530,6 +450,7 @@ int main()
         for (int i = 0; i < NUM_BRANCHES; i++) {
             window.draw(branches[i]);
         }
+
 
         if (paused)
         {
