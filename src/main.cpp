@@ -257,16 +257,16 @@ int main()
 
             for (int i = 0; i < CloudsArray.size(); i++) {
                 if (!CloudsArray[i].GetActive()) {
-                    srand((int)time);
+                    srand((int)rand()%300);
                     CloudsArray[i].SetSpeed((rand() % 300)+150);
-                    srand((int)time);
+                    srand((int)rand()%200);
                     float height = (rand() % 150);
                     float length = -(rand() % 700);
                     CloudsArray[i].SetCloudPosition
                     (
                         sf::Vector2<float>
                         (
-                            length,
+                            length-150.0f,
                             CloudsArray[i].GetCloudPosition().y
                         )
                     );
@@ -287,10 +287,6 @@ int main()
                     {
                         CloudsArray[i].SetActive(false);
                     }
-
-
-
-
                 }
             }
 
