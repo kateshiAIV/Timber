@@ -15,12 +15,7 @@ using namespace sf;
 
 void updateBranches(int seed);
 
-const int NUM_BRANCHES = 6;
 
-
-
-
-side branchPositions[NUM_BRANCHES];
 
 
 
@@ -44,17 +39,6 @@ int main()
     soundBufferTime.loadFromFile("sound/out_of_time.wav");
     Sound soundTime(soundBufferTime);
     
-
-    Texture textureBranch;
-    textureBranch.loadFromFile("graphics/branch.png");
-    std::vector<sf::Sprite> branches{
-        sf::Sprite(textureBranch),
-        sf::Sprite(textureBranch),
-        sf::Sprite(textureBranch),
-        sf::Sprite(textureBranch),
-        sf::Sprite(textureBranch),
-        sf::Sprite(textureBranch)
-    };
 
     sf::Font font;
     font.openFromFile("fonts/KOMIKAP.ttf");
@@ -107,6 +91,19 @@ int main()
     spriteTree.setPosition(sf::Vector2<float>(810.0f, 0.0f));
 
 
+    //Branches
+
+	Branch::LoadTexture();
+    std::vector<Branch> BranchesArray =
+    {
+        Branch(),
+        Branch(),
+        Branch(),
+        Branch(),
+        Branch(),
+        Branch()
+    };
+
     //Bees
     Bee::LoadTexture();
     std::vector<Bee> BeesArray =
@@ -123,6 +120,7 @@ int main()
         Cloud(1500.0f, 0.0f),
         Cloud(1800.0f, 300.0f)
     };
+
 
 
 

@@ -13,8 +13,17 @@ private:
 
 	static sf::Texture textureBranch;
 	sf::Sprite spriteBranch;
+	side position;
 
 public:
+
+	Branch();
+	static void LoadTexture();
+	side GetPosition() const;
+	void SetPosition(side val);
+	sf::Sprite& GetSprite(); // to draw it later
+
+
 
 
 };
