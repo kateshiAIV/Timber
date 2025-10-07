@@ -4,7 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <vector>
-#include "cloud.cpp"
+#include "cloud.h"
+#include "bee.h"
 
 
 
@@ -105,19 +106,18 @@ int main()
     Sprite spriteTree(textureTree);
     spriteTree.setPosition(sf::Vector2<float>(810.0f, 0.0f));
 
-    //Bee 
-    Texture textureBee;
-    textureBee.loadFromFile("graphics/bee.png");
-    Sprite spriteBee(textureBee);
-    spriteBee.setPosition(sf::Vector2<float>(0.0f, 800.0f));
-    bool beeActive = false;
-    float beeSpeed = 0.0f;
+
+    //Bees
+    Bee::LoadTexture();
+    std::vector<Bee> BeesArray =
+    {
+        Bee(0.0f, 800.0f),
+        Bee(0.0f, 700.0f)
+    };
 
 
     //Clouds
-
     Cloud::LoadTexture();
-
     std::vector<Cloud> CloudsArray = {
         Cloud(0.0f, 150.0f),
         Cloud(1500.0f, 0.0f),
@@ -128,8 +128,6 @@ int main()
 
 
     //branch
-
-
     for (int i = 0; i < NUM_BRANCHES; i++) {
         branches[i].setTexture(textureBranch);
         branches[i].setPosition(sf::Vector2<float>(-2000.0f, -2000.0f));
@@ -225,32 +223,32 @@ int main()
 
 
 
-            //Setup the bee
-            if (!beeActive)
+            //Setup the bees
+            for (int i = 0; i < BeesArray.size(); i++)
             {
-                srand((int)time(0));
-                beeSpeed = (rand() % 200) + 200;
-
-                srand((int)time(0) * 10);
-                float height = (rand() % 500) + 500;
-                spriteBee.setPosition(sf::Vector2<float>(2000.0f, height));
-                beeActive = true;
-
-            }
-            else
-            {
-                spriteBee.setPosition
-                (
-
-                    sf::Vector2<float>(
-                        spriteBee.getPosition().x - (beeSpeed * deltaTime.asSeconds()),
-                        spriteBee.getPosition().y
-                    )
-                );
-                if (spriteBee.getPosition().x < -100)
+                if (!BeesArray[i].GetActive())
                 {
-                    // Set it up ready to be a whole new bee next frame
-                    beeActive = false;
+                    srand((int)rand() % 400);
+                    BeesArray[i].SetSpeed((rand() % 200) + 200);
+                    srand((int)rand() * 10);
+                    float height = (rand() % 500) + 500;
+                    BeesArray[i].SetBeePosition(sf::Vector2<float>(2000.0f + (rand()%300), height));
+                    BeesArray[i].SetActive(true);
+                }
+                else
+                {
+                    BeesArray[i].SetBeePosition
+                    (
+                        sf::Vector2<float>
+                        (
+                            BeesArray[i].GetBeePosition().x - (BeesArray[i].GetSpeed() * deltaTime.asSeconds()),
+                            BeesArray[i].GetBeePosition().y
+                        )
+                    );
+                    if (BeesArray[i].GetBeePosition().x < -100) 
+                    {
+                        BeesArray[i].SetActive(false);
+                    }
                 }
             }
 
@@ -433,8 +431,10 @@ int main()
         for (int i = 0; i < CloudsArray.size(); i++) {
             window.draw(CloudsArray[i].GetSprite());
         }
+        for (int i = 0; i < BeesArray.size(); i++) {
+            window.draw(BeesArray[i].GetSprite());
+        }
         window.draw(spriteTree);
-        window.draw(spriteBee);
         window.draw(txtScore);
         window.draw(timeBar);
         window.draw(spriteLog);

@@ -27,11 +27,4 @@ public:
     void SetCloudPosition(const sf::Vector2<float>& pos);
 
     sf::Sprite& GetSprite(); // to draw it later
-
-
-
-
-
-
-
 };
