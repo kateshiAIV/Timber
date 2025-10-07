@@ -7,6 +7,7 @@
 #include "cloud.h"
 #include "bee.h"
 #include "branch.h"
+#include "player.h"
 #include "enums.h"
 
 using namespace sf;
@@ -26,7 +27,6 @@ int main()
 
 
     //Sounds
-
     SoundBuffer soundBufferChop;
     soundBufferChop.loadFromFile("sound/chop.wav");
     Sound soundChop(soundBufferChop);
@@ -62,15 +62,10 @@ int main()
     int score = 0;
 
 
-
     FloatRect textRect = txtPaused.getGlobalBounds();
     txtPaused.setOrigin(textRect.getCenter());
     txtPaused.setPosition(sf::Vector2<float>(1920.0f / 2.0f, 1080.0f / 2.0f));
     txtScore.setPosition(sf::Vector2<float>(20, 20));
-
-
-
-
 
 
 	//Window;
@@ -144,11 +139,9 @@ int main()
 
     //Player Setup
 
-    Texture texturePlayer;
-    texturePlayer.loadFromFile("graphics/player.png");
-    Sprite spritePlayer(texturePlayer);
-    spritePlayer.setPosition(sf::Vector2(580.0f, 720.0f));
-    side sidePlayer = side::LEFT;
+    Player::LoadTexture();
+    Player player(580.0f, 720.0f);
+
 
     // Gravestone setup
 
@@ -157,7 +150,7 @@ int main()
     Sprite spriteRIP(textureRIP);
     spriteRIP.setPosition(sf::Vector2(600.0f, 860.0f));
 
-    // Axe setip
+    // Axe setup
 
     Texture textureAXE;
     textureAXE.loadFromFile("graphics/axe.png");
@@ -330,11 +323,11 @@ int main()
                 }
             }
 
-            if (BranchesArray[5].GetBranchSide() == sidePlayer) {
+            if (BranchesArray[5].GetBranchSide() == player.GetSidePlayer()) {
                 paused = true;
                 bActiveInput = false;
                 spriteRIP.setPosition(sf::Vector2(525.0f, 760.0f));
-                spritePlayer.setPosition(sf::Vector2(2000.0f, 620.0f));
+                player.SetPlayerPosition(sf::Vector2<float>(2000.0f, 620.0f));
                 txtPaused.setString("SQUISHED");
 
                 FloatRect textRect = txtPaused.getLocalBounds();
@@ -375,7 +368,8 @@ int main()
             }
 
             spriteRIP.setPosition(sf::Vector2(675.0f, 2000.0f));
-            spritePlayer.setPosition(sf::Vector2(580.0f, 720.0f));
+
+            player.SetPlayerPosition(sf::Vector2<float>(580.0f, 720.0f));
             bActiveInput = true;
 
         }
@@ -384,11 +378,12 @@ int main()
 
             if (Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
             {
-                sidePlayer = side::RIGHT;
+                player.SetSidePlayer(side::RIGHT);
                 score++;
                 timeRemaining += (2 / score) + 0.15;
                 spriteAXE.setPosition(sf::Vector2(AXE_POSITION_RIGHT, spriteAXE.getPosition().y));
-                spritePlayer.setPosition(sf::Vector2(1200.0f, 720.0f));
+                
+                player.SetPlayerPosition(sf::Vector2<float>(1200.0f, 720.0f));
                 updateBranches(score, BranchesArray);
                 spriteLog.setPosition(sf::Vector2(810.0f, 780.0f));
                 logSpeedX = -5000.0f;
@@ -399,11 +394,13 @@ int main()
 
             if (Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
             {
-                sidePlayer = side::LEFT;
+
+                player.SetSidePlayer(side::LEFT);
                 score++;
                 timeRemaining += (2 / score) + 0.15;
                 spriteAXE.setPosition(sf::Vector2(AXE_POSITION_LEFT, spriteAXE.getPosition().y));
-                spritePlayer.setPosition(sf::Vector2(580.0f, 720.0f));
+
+                player.SetPlayerPosition(sf::Vector2<float>(580.0f, 720.0f));
                 updateBranches(score, BranchesArray);
                 spriteLog.setPosition(sf::Vector2(810.0f, 720.0f));
                 logSpeedX = 5000.0f;
@@ -430,7 +427,7 @@ int main()
         window.draw(txtScore);
         window.draw(timeBar);
         window.draw(spriteLog);
-        window.draw(spritePlayer);
+        window.draw(player.GetSprite());
         window.draw(spriteAXE);
         window.draw(spriteRIP);
 
