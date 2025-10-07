@@ -13,7 +13,7 @@ using namespace sf;
 
 
 
-void updateBranches(int seed);
+void updateBranches(int seed, std::vector<Branch>& BranchesArray);
 
 
 
@@ -284,36 +284,30 @@ int main()
             txtScore.setString(ss.str());
 
 
+
+
+			//Update the branches
             for(int i=0; i<BranchesArray.size();i++ )
             {
 				float height = 150.0f * i;
-                if (BranchesArray[i].GetPosition() == side::LEFT)
+                if (BranchesArray[i].GetBranchSide() == side::LEFT)
                 {
-
+                    BranchesArray[i].GetSprite().setPosition(sf::Vector2<float>(610.0f, height));
+                    BranchesArray[i].GetSprite().setRotation(sf::degrees(180.0f));
+                }
+                else if (BranchesArray[i].GetBranchSide() == side::RIGHT)
+                {
+                    BranchesArray[i].GetSprite().setPosition(sf::Vector2<float>(1330.0f, height));
+					BranchesArray[i].GetSprite().setRotation(sf::degrees(0.0f));
+                }
+                else
+                {
+					BranchesArray[i].GetSprite().setPosition(sf::Vector2<float>(3000.0f, height));
                 }
             
             }
 
-            for (int i = 0; i < NUM_BRANCHES; i++) 
-            {
-                float height = 150.0f * i;
-
-                if (branchPositions[i] == side::LEFT) 
-                {
-                    branches[i].setPosition(sf::Vector2(610.0f, height));
-                    branches[i].setRotation(sf::Angle(sf::degrees(180.0f)));
-                }
-                else if (branchPositions[i] == side::RIGHT) 
-                {
-                    branches[i].setPosition(sf::Vector2(1330.0f, height));
-                    branches[i].setRotation(sf::Angle(sf::degrees(0.0f)));
-                }
-                else 
-                {
-                    branches[i].setPosition(sf::Vector2(6000.0f, height));
-                }
-
-            }
+           
 
             if (logActive)
             {
@@ -336,7 +330,7 @@ int main()
                 }
             }
 
-            if (branchPositions[5] == sidePlayer) {
+            if (BranchesArray[5].GetBranchSide() == sidePlayer) {
                 paused = true;
                 bActiveInput = false;
                 spriteRIP.setPosition(sf::Vector2(525.0f, 760.0f));
@@ -375,9 +369,9 @@ int main()
             timeRemaining = 6;
             score = 0;
 
-            for (int i = 0; i < NUM_BRANCHES; i++) 
+            for (int i = 0; i < BranchesArray.size(); i++) 
             {
-                branchPositions[i] = side::NONE;
+				BranchesArray[i].SetBranchSide(side::NONE);
             }
 
             spriteRIP.setPosition(sf::Vector2(675.0f, 2000.0f));
@@ -395,7 +389,7 @@ int main()
                 timeRemaining += (2 / score) + 0.15;
                 spriteAXE.setPosition(sf::Vector2(AXE_POSITION_RIGHT, spriteAXE.getPosition().y));
                 spritePlayer.setPosition(sf::Vector2(1200.0f, 720.0f));
-                updateBranches(score);
+                updateBranches(score, BranchesArray);
                 spriteLog.setPosition(sf::Vector2(810.0f, 780.0f));
                 logSpeedX = -5000.0f;
                 logActive = true;
@@ -410,7 +404,7 @@ int main()
                 timeRemaining += (2 / score) + 0.15;
                 spriteAXE.setPosition(sf::Vector2(AXE_POSITION_LEFT, spriteAXE.getPosition().y));
                 spritePlayer.setPosition(sf::Vector2(580.0f, 720.0f));
-                updateBranches(score);
+                updateBranches(score, BranchesArray);
                 spriteLog.setPosition(sf::Vector2(810.0f, 720.0f));
                 logSpeedX = 5000.0f;
                 logActive = true;
@@ -441,8 +435,8 @@ int main()
         window.draw(spriteRIP);
 
 
-        for (int i = 0; i < NUM_BRANCHES; i++) {
-            window.draw(branches[i]);
+        for (int i = 0; i < BranchesArray.size(); i++) {
+            window.draw(BranchesArray[i].GetSprite());
         }
 
 
@@ -459,10 +453,10 @@ int main()
 }
 
 
-void updateBranches(int seed)
+void updateBranches(int seed, std::vector<Branch>& BranchesArray)
 {
-    for (int j = NUM_BRANCHES - 1; j > 0; j--) {
-        branchPositions[j] = branchPositions[j - 1];
+    for (int j = BranchesArray.size() - 1; j > 0; j--) {
+		BranchesArray[j].SetBranchSide(BranchesArray[j - 1].GetBranchSide());
     }
     // Spawn a new branch at position 0
  // LEFT, RIGHT or NONE
@@ -470,13 +464,13 @@ void updateBranches(int seed)
     int r = (rand() % 5);
     switch (r) {
     case 0:
-        branchPositions[0] = side::LEFT;
+		BranchesArray[0].SetBranchSide(side::LEFT);
         break;
     case 1:
-        branchPositions[0] = side::RIGHT;
+        BranchesArray[0].SetBranchSide(side::RIGHT);
         break;
     default:
-        branchPositions[0] = side::NONE;
+        BranchesArray[0].SetBranchSide(side::NONE);
         break;
 
     }

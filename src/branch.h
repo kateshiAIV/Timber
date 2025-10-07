@@ -19,11 +19,9 @@ public:
 
 	Branch(float x, float y);
 	static void LoadTexture();
-	side GetPosition() const;
-	void SetPosition(side val);
+	side GetBranchSide() const;
+	void SetBranchSide(side val);
 	sf::Sprite& GetSprite(); // to draw it later
-
-
-
-
+	sf::Vector2<float> GetBranchPosition() const;
+	void SetBranchPosition(const sf::Vector2<float>& pos);
 };

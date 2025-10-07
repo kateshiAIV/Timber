@@ -1,19 +1,19 @@
 #include "branch.h"
 
-Branch::Branch(float x, float y) : position(side::NONE), spriteBranch(textureBranch)
+Branch::Branch(float x, float y) : position(side::RIGHT), spriteBranch(textureBranch)
 {
 	spriteBranch.setPosition(sf::Vector2<float>(x, y));
 	spriteBranch.setOrigin(sf::Vector2<float>(220.0f, 20.0f));
 }
 
 
-side Branch::GetPosition() const 
+side Branch::GetBranchSide() const
 {
 	return position;
 }
 
 
-void Branch::SetPosition(side val)
+void Branch::SetBranchSide(side val)
 {
 	this->position = val;
 }
@@ -21,6 +21,14 @@ void Branch::SetPosition(side val)
 sf::Sprite& Branch::GetSprite()
 {
 	return spriteBranch;
+}
+
+sf::Vector2<float> Branch::GetBranchPosition() const {
+	return spriteBranch.getPosition();
+}
+
+void Branch::SetBranchPosition(const sf::Vector2<float>& pos) {
+	spriteBranch.setPosition(pos);
 }
 
 sf::Texture Branch::textureBranch;
