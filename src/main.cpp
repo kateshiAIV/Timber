@@ -6,8 +6,8 @@
 #include <vector>
 #include "cloud.h"
 #include "bee.h"
-
-
+#include "branch.h"
+#include "enums.h"
 
 using namespace sf;
 
@@ -19,7 +19,7 @@ const int NUM_BRANCHES = 6;
 
 
 
-enum class side { LEFT, RIGHT, NONE };
+
 side branchPositions[NUM_BRANCHES];
 
 
@@ -222,7 +222,6 @@ int main()
             txtScore.setPosition(sf::Vector2<float>(20, 20));
 
 
-
             //Setup the bees
             for (int i = 0; i < BeesArray.size(); i++)
             {
@@ -252,7 +251,7 @@ int main()
                 }
             }
 
-
+			//Setup the clouds
             for (int i = 0; i < CloudsArray.size(); i++) {
                 if (!CloudsArray[i].GetActive()) {
                     srand((int)rand()%300);
