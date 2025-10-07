@@ -92,16 +92,15 @@ int main()
 
 
     //Branches
-
 	Branch::LoadTexture();
     std::vector<Branch> BranchesArray =
     {
-        Branch(),
-        Branch(),
-        Branch(),
-        Branch(),
-        Branch(),
-        Branch()
+        Branch(-2000.0f, -2000.0f),
+        Branch(-2000.0f, -2000.0f),
+        Branch(-2000.0f, -2000.0f),
+        Branch(-2000.0f, -2000.0f),
+        Branch(-2000.0f, -2000.0f),
+        Branch(-2000.0f, -2000.0f)
     };
 
     //Bees
@@ -124,14 +123,6 @@ int main()
 
 
 
-
-    //branch
-    for (int i = 0; i < NUM_BRANCHES; i++) {
-        branches[i].setTexture(textureBranch);
-        branches[i].setPosition(sf::Vector2<float>(-2000.0f, -2000.0f));
-        branches[i].setOrigin(sf::Vector2<float>(220.0f, 20.0f));
-
-    }
 
 
 
@@ -292,6 +283,16 @@ int main()
             ss << "Score = " << score;
             txtScore.setString(ss.str());
 
+
+            for(int i=0; i<BranchesArray.size();i++ )
+            {
+				float height = 150.0f * i;
+                if (BranchesArray[i].GetPosition() == side::LEFT)
+                {
+
+                }
+            
+            }
 
             for (int i = 0; i < NUM_BRANCHES; i++) 
             {

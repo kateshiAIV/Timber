@@ -17,7 +17,7 @@ private:
 
 public:
 
-	Branch();
+	Branch(float x, float y);
 	static void LoadTexture();
 	side GetPosition() const;
 	void SetPosition(side val);
