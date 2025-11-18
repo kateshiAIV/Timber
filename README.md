@@ -20,15 +20,8 @@ Timber is an arcade-style, fast-paced tree-chopping game built with C++ and SFML
 
 ## Screenshots
 ![Gameplay Screenshot](https://github.com/user-attachments/assets/18134e9d-9ee0-4bb2-b1a6-957eb748fb0f)
+![Gameplay Screenshot 2](https://github.com/user-attachments/assets/1fc5b6a1-3ed3-4ef0-b566-8b0036631900)
 
-
-```markdown
-<img width="1901" height="953" alt="image" src="https://github.com/user-attachments/assets/18134e9d-9ee0-4bb2-b1a6-957eb748fb0f" />
-```
-
-```markdown
-<img width="1901" height="953" alt="image" src="https://github.com/user-attachments/assets/1fc5b6a1-3ed3-4ef0-b566-8b0036631900" />
-```
 
 ## Features
 
