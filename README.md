@@ -1,101 +1,137 @@
-# CMake SFML Project Template
+# Timber
 
-This repository template should allow for a fast and hassle-free kick start of your next SFML project using CMake.
-Thanks to [GitHub's nature of templates](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template), you can fork this repository without inheriting its Git history.
+Timber is an arcade-style, fast-paced tree-chopping game built with C++ and SFML 3.x. Swing your axe, avoid obstacles, collect power-ups, and see how long you can survive!
 
-The template starts out very basic, but might receive additional features over time:
+- Repository description: Timber game developed with SFML 3.0.1
+- Languages: C++, CMake
 
-- Basic CMake script to build your project and link SFML on any operating system
-- Basic [GitHub Actions](https://github.com/features/actions) script for all major platforms
+---
 
-## How to Use
+## Table of contents
 
-1. Install [Git](https://git-scm.com/downloads) and [CMake](https://cmake.org/download/). Use your system's package manager if available.
-2. Follow [GitHub's instructions](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template) for how to use their project template feature to create your own project. If you don't want to use GitHub, see the section below.
-3. Clone your new GitHub repo and open the repo in your text editor of choice.
-4. Open [CMakeLists.txt](CMakeLists.txt). Rename the project and the target name of the executable to whatever name you want. Make sure to change all occurrences.
-5. If you want to add or remove any .cpp files, change the source files listed in the `add_executable` call in CMakeLists.txt to match the source files your project requires. If you plan on keeping the default main.cpp file then no changes are required.
-6. If your code uses the Audio or Network modules then add `SFML::Audio` or `SFML::Network` to the `target_link_libraries` call alongside the existing `SFML::Graphics` library that is being linked.
-7. If you use Linux, install SFML's dependencies using your system package manager. On Ubuntu and other Debian-based distributions you can use the following commands:
-   ```
-   sudo apt update
-   sudo apt install \
-       libxrandr-dev \
-       libxcursor-dev \
-       libxi-dev \
-       libudev-dev \
-       libfreetype-dev \
-       libflac-dev \
-       libvorbis-dev \
-       libgl1-mesa-dev \
-       libegl1-mesa-dev \
-       libfreetype-dev
-   ```
-8. Configure and build your project. Most popular IDEs support CMake projects with very little effort on your part.
+- [Screenshots](#screenshots)
+- [Features](#features)
+- [Controls](#controls)
+- [Build & Run](#build--run)
+- [Dependencies](#dependencies)
+- [Packaging / Distribution](#packaging--distribution)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
 
-   - [VS Code](https://code.visualstudio.com) via the [CMake extension](https://code.visualstudio.com/docs/cpp/cmake-linux)
-   - [Visual Studio](https://docs.microsoft.com/en-us/cpp/build/cmake-projects-in-visual-studio?view=msvc-170)
-   - [CLion](https://www.jetbrains.com/clion/features/cmake-support.html)
-   - [Qt Creator](https://doc.qt.io/qtcreator/creator-project-cmake.html)
+---
 
-   Using CMake from the command line is straightforward as well.
-   Be sure to run these commands in the root directory of the project you just created.
+## Screenshots
 
-   ```
-   cmake -B build
-   cmake --build build
-   ```
+I've added two example screenshot entries below. To display these in the README you need to add the corresponding image files into the repository, recommended path: assets/screenshots/.
 
-9. Enjoy!
+Recommended filenames (as used below)
+- assets/screenshots/screenshot-1.png  (Image 1: "Squished" game-over)
+- assets/screenshots/screenshot-2.png  (Image 2: "Out of time" game-over)
 
-## Upgrading SFML
+Direct embedded images (replace with your actual files)
+```markdown
+![Squished — Game Over](assets/screenshots/screenshot-1.png "Squished — Game Over")
+```
 
-SFML is found via CMake's [FetchContent](https://cmake.org/cmake/help/latest/module/FetchContent.html) module.
-FetchContent automatically downloads SFML from GitHub and builds it alongside your own code.
-Beyond the convenience of not having to install SFML yourself, this ensures ABI compatibility and simplifies things like specifying static versus shared libraries.
+```markdown
+![Out of Time — Game Over](assets/screenshots/screenshot-2.png "Out of Time — Game Over")
+```
 
-Modifying what version of SFML you want is as easy as changing the `GIT_TAG` argument.
-Currently it uses SFML 3 via the `3.0.0` tag.
+Side-by-side / gallery (HTML works on GitHub README)
+```html
+<p float="left">
+  <img src="assets/screenshots/screenshot-1.png" width="640" alt="Squished — Game Over" />
+  <img src="assets/screenshots/screenshot-2.png" width="640" alt="Out of Time — Game Over" />
+</p>
+```
 
-## But I want to...
+Clickable thumbnail that opens full-size:
+```markdown
+[![Gameplay thumb](assets/screenshots/screenshot-2-thumb.png)](assets/screenshots/screenshot-2.png)
+```
 
-Modify CMake options by adding them as configuration parameters (with a `-D` flag) or by modifying the contents of CMakeCache.txt and rebuilding.
+Tips:
+- Use PNG (lossless) for crisp pixel-art images.
+- Recommended width for full-size hero images in README: 1200–1600px. Create thumbnails at ~480–720px for faster load.
+- Add descriptive alt text and titles for accessibility.
 
-### Not use GitHub
+---
 
-You can use this project without a GitHub account by [downloading the contents](https://github.com/SFML/cmake-sfml-project/archive/refs/heads/master.zip) of the repository as a ZIP archive and unpacking it locally.
-This approach also avoids using Git entirely if you would prefer to not do that.
+## Features
 
-### Change Compilers
+- Arcade-style tree-chopping gameplay
+- Smooth 60+ FPS rendering with SFML 3.x
+- Keyboard (and optional controller) input
+- Simple, configurable scoring system
+- Sound effects and music (SFML Audio)
+- Configurable difficulty and power-ups
+- Cross-platform: Windows, macOS, Linux (via CMake)
 
-See the variety of [`CMAKE_<LANG>_COMPILER`](https://cmake.org/cmake/help/latest/variable/CMAKE_LANG_COMPILER.html) options.
-In particular you'll want to modify `CMAKE_CXX_COMPILER` to point to the C++ compiler you wish to use.
+---
 
-### Change Compiler Optimizations
+## Controls
 
-CMake abstracts away specific optimizer flags through the [`CMAKE_BUILD_TYPE`](https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html) option.
-By default this project recommends `Release` builds which enable optimizations.
-Other build types include `Debug` builds which enable debug symbols but disable optimizations.
-If you're using a multi-configuration generator (as is often the case on Windows), you can modify the [`CMAKE_CONFIGURATION_TYPES`](https://cmake.org/cmake/help/latest/variable/CMAKE_CONFIGURATION_TYPES.html#variable:CMAKE_CONFIGURATION_TYPES) option.
+Default controls (configurable in code)
+- Left player / chop left: Left Arrow (or A)
+- Right player / chop right: Right Arrow (or D)
+- Pause: P or Esc
+- Restart after game over: R
 
-### Change Generators
+(If your build supports controllers, include controller mappings in the game options.)
 
-While CMake will attempt to pick a suitable default generator, some systems offer a number of generators to choose from.
-Ubuntu, for example, offers Makefiles and Ninja as two potential options.
-For a list of generators, click [here](https://cmake.org/cmake/help/latest/manual/cmake-generators.7.html).
-To modify the generator you're using you must reconfigure your project providing a `-G` flag with a value corresponding to the generator you want.
-You can't simply modify an entry in the CMakeCache.txt file unlike the above options.
-Then you may rebuild your project with this new generator.
+---
 
-## More Reading
+## Build & Run
 
-Here are some useful resources if you want to learn more about CMake:
+This project uses CMake. The repository is setup to use FetchContent to obtain SFML automatically, but you can also install SFML system-wide and let CMake find it.
 
-- [Official CMake Tutorial](https://cmake.org/cmake/help/latest/guide/tutorial/)
-- [How to Use CMake Without the Agonizing Pain - Part 1](https://alexreinking.com/blog/how-to-use-cmake-without-the-agonizing-pain-part-1.html)
-- [How to Use CMake Without the Agonizing Pain - Part 2](https://alexreinking.com/blog/how-to-use-cmake-without-the-agonizing-pain-part-2.html)
-- [Better CMake YouTube series by Jefferon Amstutz](https://www.youtube.com/playlist?list=PL8i3OhJb4FNV10aIZ8oF0AA46HgA2ed8g)
+Basic build steps (from project root):
 
-## License
+Unix / macOS / Windows (with multi-config generators, add `--config Release` to the build step):
 
-The source code is dual licensed under Public Domain and MIT -- choose whichever you prefer.
+```bash
+# Create a build directory and configure
+cmake -B build -S .
+
+# Build the project
+cmake --build build --config Release
+
+# Run the game (binary name may vary; replace `timber` with your executable)
+./build/timber
+# or on Windows:
+.\build\Release\timber.exe
+```
+
+Notes
+- To change compilers or generator, pass `-G` or set `CMAKE_CXX_COMPILER`.
+- To change build type for single-config generators, pass `-DCMAKE_BUILD_TYPE=Release` (or Debug).
+
+Troubleshooting
+- If SFML is not downloaded or configured, check CMake output for errors. You can also set `SFML_DIR` to a local SFML build.
+- On Linux, if you prefer using the system SFML package, install SFML and remove or modify the FetchContent section in `CMakeLists.txt`.
+
+---
+
+## Dependencies
+
+- CMake (>= 3.19 recommended)
+- C++17 or later (configured in CMake)
+- SFML 3.x (the template uses FetchContent to download SFML; repository description indicates SFML 3.0.1)
+
+Linux packages (Ubuntu/Debian) for building SFML from system packages (if you choose not to use FetchContent):
+```bash
+sudo apt update
+sudo apt install libxrandr-dev libxcursor-dev libxi-dev libudev-dev libfreetype-dev \
+                 libflac-dev libvorbis-dev libgl1-mesa-dev libegl1-mesa-dev
+```
+
+---
+
+## Packaging / Distribution
+
+- Windows: create an installer or bundle the executable with required DLLs (SFML dynamic libs) or build static.
+- macOS: create a .app bundle (embed SFML frameworks).
+- Linux: provide a tarball with executable and any required shared libraries, or build a distro package.
+
+To build a static executable, modify your CMake options to link SFML statically and set the appropriate compile/link flags. Check `CMakeLists.txt` for `SFML_USE_STATIC_LIBS` or GIT_TAG options for FetchContent.
