@@ -15,48 +15,18 @@ Timber is an arcade-style, fast-paced tree-chopping game built with C++ and SFML
 - [Build & Run](#build--run)
 - [Dependencies](#dependencies)
 - [Packaging / Distribution](#packaging--distribution)
-- [Contributing](#contributing)
-- [License](#license)
-- [Contact](#contact)
 
 ---
 
 ## Screenshots
 
-I've added two example screenshot entries below. To display these in the README you need to add the corresponding image files into the repository, recommended path: assets/screenshots/.
-
-Recommended filenames (as used below)
-- assets/screenshots/screenshot-1.png  (Image 1: "Squished" game-over)
-- assets/screenshots/screenshot-2.png  (Image 2: "Out of time" game-over)
-
-Direct embedded images (replace with your actual files)
 ```markdown
-![Squished — Game Over](assets/screenshots/screenshot-1.png "Squished — Game Over")
+<img width="1901" height="953" alt="image" src="https://github.com/user-attachments/assets/18134e9d-9ee0-4bb2-b1a6-957eb748fb0f" />
 ```
 
 ```markdown
-![Out of Time — Game Over](assets/screenshots/screenshot-2.png "Out of Time — Game Over")
+<img width="1901" height="953" alt="image" src="https://github.com/user-attachments/assets/1fc5b6a1-3ed3-4ef0-b566-8b0036631900" />
 ```
-
-Side-by-side / gallery (HTML works on GitHub README)
-```html
-<p float="left">
-  <img src="assets/screenshots/screenshot-1.png" width="640" alt="Squished — Game Over" />
-  <img src="assets/screenshots/screenshot-2.png" width="640" alt="Out of Time — Game Over" />
-</p>
-```
-
-Clickable thumbnail that opens full-size:
-```markdown
-[![Gameplay thumb](assets/screenshots/screenshot-2-thumb.png)](assets/screenshots/screenshot-2.png)
-```
-
-Tips:
-- Use PNG (lossless) for crisp pixel-art images.
-- Recommended width for full-size hero images in README: 1200–1600px. Create thumbnails at ~480–720px for faster load.
-- Add descriptive alt text and titles for accessibility.
-
----
 
 ## Features
 
